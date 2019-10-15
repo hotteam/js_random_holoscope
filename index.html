@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>てきとうに創作のキャラ作りに使うホロスコープデータ</title>
+    <link rel="stylesheet" type="text/css" href="css.css">
+</head>
+<body>
+    <h1>てきとうに創作のキャラ作りに使うホロスコープデータ</h1>
+    <table id="horoscope_data">
+        <tr>
+            <th>惑星</th>
+            <th>random数値</th>
+            <th>サインと角度</th>
+            <th>ハウス</th>
+        </tr>
+        <tr>
+            <td>太陽</td>
+            <td><div id="sun_result"></div></td>
+            <td><div id="sun_sign_result"></div></td>
+            <td><div id="sun_house_result"></div></td>
+        </tr>
+        <tr>
+            <td>月</td>
+            <td><div id="moon_result"></div></td>
+            <td><div id="moon_sign_result"></div></td>
+            <td><div id="moon_house_result"></div></td>
+        </tr>
+        <tr>
+            <td>水星</td>
+            <td><div id="merc_result"></div></td>
+            <td><div id="merc_sign_result"></div></td>
+            <td><div id="merc_house_result"></div></td>
+        </tr>
+        <tr>
+            <td>金星</td>
+            <td><div id="ven_result"></div></td>
+            <td><div id="ven_sign_result"></div></td>
+            <td><div id="ven_house_result"></div></td>
+        </tr>
+        <tr>
+            <td>火星</td>
+            <td><div id="mar_result"></div></td>
+            <td><div id="mar_sign_result"></div></td>
+            <td><div id="mar_house_result"></div></td>
+        </tr>
+        <tr>
+            <td>木星</td>
+            <td><div id="jup_result"></div></td>
+            <td><div id="jup_sign_result"></div></td>
+            <td><div id="jup_house_result"></div></td>
+        </tr>
+        <tr>
+            <td>土星</td>
+            <td><div id="sat_result"></div></td>
+            <td><div id="sat_sign_result"></div></td>
+            <td><div id="sat_house_result"></div></td>
+        </tr>
+        <tr>
+            <td>天王星</td>
+            <td><div id="ura_result"></div></td>
+            <td><div id="ura_sign_result"></div></td>
+            <td><div id="ura_house_result"></div></td>
+        </tr>
+        <tr>
+            <td>海王星</td>
+            <td><div id="nep_result"></div></td>
+            <td><div id="nep_sign_result"></div></td>
+            <td><div id="nep_house_result"></div></td>
+        </tr>
+        <tr>
+            <td>冥王星</td>
+            <td><div id="plu_result"></div></td>
+            <td><div id="plu_sign_result"></div></td>
+            <td><div id="plu_house_result"></div></td>
+        </tr>
+        <tr>
+            <td>Asc</td>
+            <td><div id="asc_result"></div></td>
+            <td><div id="asc_sign_result"></div></td>
+            <td>---</td>
+        </tr>
+        <tr>
+            <td>MC</td>
+            <td><div id="mc_result"></div></td>
+            <td><div id="mc_sign_result"></div></td>
+            <td>---</td>
+        </tr>
+    </table>
+
+<!--
+    <table id="house_data">
+        <tr>
+            <th>ハウスカスプ</th>
+            <th>位置</th>
+        </tr>
+        <tr>
+            <td>1室</td>
+            <td><div id="1st_casp"></div></td>
+        </tr>
+        <tr>
+            <td>2室</td>
+            <td><div id="2nd_casp"></div></td>
+        </tr>
+        <tr>
+            <td>3室</td>
+            <td><div id="3rd_casp"></div></td>
+        </tr>
+        <tr>
+            <td>4室</td>
+            <td><div id="4th_casp"></div></td>
+        </tr>
+        <tr>
+            <td>5室</td>
+            <td><div id="5th_casp"></div></td>
+        </tr>
+        <tr>
+            <td>6室</td>
+            <td><div id="6th_casp"></div></td>
+        </tr>
+        <tr>
+            <td>7室</td>
+            <td><div id="7th_casp"></div></td>
+        </tr>
+        <tr>
+            <td>8室</td>
+            <td><div id="8th_casp"></div></td>
+        </tr>
+        <tr>
+            <td>9室</td>
+            <td><div id="9th_casp"></div></td>
+        </tr>
+        <tr>
+            <td>10室</td>
+            <td><div id="10th_casp"></div></td>
+        </tr>
+        <tr>
+            <td>11室</td>
+            <td><div id="11th_casp"></div></td>
+        </tr>
+        <tr>
+            <td>12室</td>
+            <td><div id="12th_casp"></div></td>
+        </tr>
+    </table>
+ -->
+
+    <!-- JavaScript -->
+    <script type="text/javascript">
+        'use strict'; // strictモード宣言
+        // 利用する天体と名称
+        let arr_name_points = { sun: '太陽' , moon: '月' , merc: '水星' , ven: '金星' , mar: '火星' , jup: '木星' , sat: '土星' , ura: '天王星' , nep: '海王星' , plu: '冥王星' , asc: 'Asc' , mc: 'MC'};
+        // 各天体のキー
+        let arr_key_points = { sun: '0' , moon: '1' , merc: '2' , ven: '3' , mar: '4' , jup: '5' , sat: '6' , ura: '7' , nep: '8' , plu: '9' , asc: '10' , mc: '11'};
+        // サイン
+        let arr_sign = ['白羊宮','金牛宮','双児宮','巨蟹宮','獅子宮','処女宮','天秤宮','天蝎宮','人馬宮','磨羯宮','宝瓶宮','双魚宮'];
+
+        // 天体の0度からの計算位置
+        let num_points = numCalc();
+        num_points[2] = num_points[0] + getRandom( -27, 27 ); // 水星は太陽から28度以上離れないので
+        num_points[3] = num_points[0] + getRandom( -47, 47 ); // 金星は太陽から48度以上離れないので
+
+        // 天体のサイン位置
+        let sign_points = signCalc( num_points );
+
+        // 天体の表示用角度
+        let alt_points = signAlt( num_points );
+
+        // ハウスカスプの配列
+        let casp = caspCalc( num_points[10] );
+
+        // テーブルの所定の箇所に変数を表示させる
+        document.getElementById('sun_result').textContent = num_points[0];
+        document.getElementById('sun_sign_result').textContent = sign_points[0] + ' ' + alt_points[0] + '度';
+        document.getElementById('sun_house_result').textContent = houseCalc( num_points[0] , num_points[10] ) + '室';
+        document.getElementById('moon_result').textContent = num_points[1];
+        document.getElementById('moon_sign_result').textContent = sign_points[1] + ' ' + alt_points[1] + '度';
+        document.getElementById('moon_house_result').textContent = houseCalc(  num_points[1] , num_points[10] ) + '室';
+        document.getElementById('merc_result').textContent = num_points[2];
+        document.getElementById('merc_sign_result').textContent = sign_points[2] + ' ' + alt_points[2] + '度';
+        document.getElementById('merc_house_result').textContent = houseCalc(  num_points[2] , num_points[10] ) + '室';
+        document.getElementById('ven_result').textContent = num_points[3];
+        document.getElementById('ven_sign_result').textContent = sign_points[3] + ' ' + alt_points[3] + '度';
+        document.getElementById('ven_house_result').textContent = houseCalc( num_points[3] , num_points[10] ) + '室';
+        document.getElementById('mar_result').textContent = num_points[4];
+        document.getElementById('mar_sign_result').textContent = sign_points[4] + ' ' + alt_points[4] + '度';
+        document.getElementById('mar_house_result').textContent = houseCalc( num_points[4] , num_points[10] ) + '室';
+        document.getElementById('jup_result').textContent = num_points[5];
+        document.getElementById('jup_sign_result').textContent = sign_points[5] + ' ' + alt_points[5] + '度';
+        document.getElementById('jup_house_result').textContent = houseCalc( num_points[5] , num_points[10] ) + '室';
+        document.getElementById('sat_result').textContent = num_points[6];
+        document.getElementById('sat_sign_result').textContent = sign_points[6] + ' ' + alt_points[6] + '度';
+        document.getElementById('sat_house_result').textContent = houseCalc( num_points[6] , num_points[10] ) + '室';
+        document.getElementById('ura_result').textContent = num_points[7];
+        document.getElementById('ura_sign_result').textContent = sign_points[7] + ' ' + alt_points[7] + '度';
+        document.getElementById('ura_house_result').textContent = houseCalc( num_points[7] , num_points[10] ) + '室';
+        document.getElementById('nep_result').textContent = num_points[8];
+        document.getElementById('nep_sign_result').textContent = sign_points[8] + ' ' + alt_points[8] + '度';
+        document.getElementById('nep_house_result').textContent = houseCalc( num_points[8] , num_points[10] ) + '室';
+        document.getElementById('plu_result').textContent = num_points[9];
+        document.getElementById('plu_sign_result').textContent = sign_points[9] + ' ' + alt_points[9] + '度';
+        document.getElementById('plu_house_result').textContent = houseCalc( num_points[9] , num_points[10] ) + '室';
+        document.getElementById('asc_result').textContent = num_points[10];
+        document.getElementById('asc_sign_result').textContent = sign_points[10] + ' ' + alt_points[10] + '度';
+        document.getElementById('mc_result').textContent = num_points[11];
+        document.getElementById('mc_sign_result').textContent = sign_points[11] + ' ' +alt_points[11] + '度';
+
+
+        // ランダム関数
+        function getRandom( min, max ) {
+
+            let random = 0;
+            random = Math.floor( Math.random() * (max + 1 - min) ) + min;
+            return random;
+        }
+
+        // 天体位置計算
+        function numCalc() {
+
+            let arr = [];
+            let i = 1; // カウンタ用
+            while ( i < Object.keys(arr_key_points).length + 1 ) {
+                let data = getRandom( 0 , 359 );
+                arr.push( data );
+                i = ++i;
+            }
+            return arr;
+        }
+
+        // 天体のサイン計算
+        function signCalc( alt ) {
+
+            let arr = [];
+            let i = 1; // カウンタ用
+            while ( i < alt.length + 1 ) {
+                let data = Math.floor( alt[ i - 1 ] / 30 ); // サインは30度ごと
+                data = ( arr_sign[ data ] );
+                arr.push ( data );
+                i = ++i;
+            }
+            return arr;
+        }
+
+        // 角度計算
+        function signAlt( alt ) {
+
+            let arr = [];
+            let i = 1; // カウンタ用
+            while (i < alt.length + 1 ) {
+                let data = Math.floor( alt[ i - 1 ] % 30 ); // 角度は剰余部分
+                arr.push ( data );
+                i = ++i;
+            }
+            console.log( arr );
+            return arr;
+        }
+
+        // ハウスカスプ計算、現時点では不要な処理だけどホロスコープ作るなら多分要る
+        function caspCalc( alt ) {
+
+            let data = [ alt ]; // Ascの位置が常に1ハウスの0度
+            let i = 1 ; // カウンタ用変数
+
+            while ( alt < 330 && i < 12 ) { // 2ハウス以降の角度計算しますが330以上だとエライことになるので引数が329まで且つ11回目まで
+                alt = alt + 30; // 30足して次のカスプ位置計算
+                data.push( alt ); // 変数 data の最後尾に2ハウスカスプを放り込んでる
+                i = ++i;
+            }
+
+            while ( alt >= 330 && i < 12 ) { // 2ハウス以降の角度計算するのに引数が330以上になってしまっており且つ11回目まで
+                alt = alt +30; // 30足して次のカスプ位置計算
+                data.push( alt - 360 ); // 360超えてるので360を引いてから変数 data の最後尾に放り込む
+                i = ++i;
+            }
+            return data; // カスプ全部を送り出す
+        }
+
+        // 在ハウス計算
+        function houseCalc( point , asc ) {
+
+            let angle = 0; // asc が0度の時天体が所属するハウス
+
+            if ( point < asc ) { // point が asc よりも数値が小さい = 次元を一度飛び越えている 場合
+                point = point + 360; // 360を足して飛び越えた場合の角度数値を出す
+            }
+
+            angle = Math.floor( ( point - asc ) / 30 ) +1 ; // asc を0度とした時の天体の角度はasc直後30度以内が1室なので1を足しておく
+            return angle;
+        }
+
+        // コンジャンクション( 0度 )計算
+        function conjCalc( alt ) {
+
+            let arr = [];
+            let i = 1; // カウンタ用変数
+            let j = 0; // カウンタ用変数
+            while (i < alt.length + 1 ) {
+
+                let data = alt[ j + 1 ]; // 天体の位置を代入
+                while ( j < alt.length ) {
+
+                }
+                arr.push ( data );
+                i = ++i;
+            }
+            return arr;
+        }
+    </script>
+</body>
+</html>

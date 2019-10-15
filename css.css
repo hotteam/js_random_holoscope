@@ -1,0 +1,4 @@
+table#horoscope_data td, table#house_data td{
+    border: #ccc 1px solid;
+    padding: 0em 1.2em;
+}
